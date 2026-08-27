@@ -1,0 +1,36 @@
+{
+    "name": "alt-design/alt-tabs",
+    "description": "A Statamic fieldtype that visually organises subsequent blueprint fields into named tabs.",
+    "version": "1.0.0",
+    "type": "statamic-addon",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "AltDesign\\AltTabsAddon\\": "src"
+        }
+    },
+    "require": {
+        "php": "^8.2",
+        "statamic/cms": "^6.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0|^10.0",
+        "phpunit/phpunit": "^11.0|^12.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AltDesign\\AltTabsAddon\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Alt Tabs",
+            "description": "ACF-style Tab fieldtype that splits subsequent fields into tabs."
+        },
+        "laravel": {
+            "providers": [
+                "AltDesign\\AltTabsAddon\\ServiceProvider"
+            ]
+        }
+    }
+}

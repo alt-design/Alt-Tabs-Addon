@@ -1,0 +1,135 @@
+/* Marker is invisible — it's just a hook for the reorganiser. */
+.alt-tabs-marker {
+    display: none;
+}
+
+.alt-tabs-reorganised > .alt-tabs-marker-wrapper {
+    display: none !important;
+}
+
+.alt-tabs-field-hidden {
+    display: none !important;
+}
+
+/* Tab bar — shared */
+.alt-tabs-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 0 0 1.25rem 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--ui-color-gray-200, #e2e8f0);
+}
+
+.alt-tabs-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    margin-bottom: -1px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--ui-color-gray-600, #64748b);
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    cursor: pointer;
+    transition: color 140ms ease, border-color 140ms ease, background 140ms ease;
+}
+
+.alt-tabs-button:hover {
+    color: var(--ui-color-gray-900, #1a202c);
+    border-bottom-color: var(--ui-color-gray-300, #cbd5e1);
+}
+
+.alt-tabs-button.is-active {
+    color: var(--ui-color-primary-600, #2563eb);
+    border-bottom-color: var(--ui-color-primary-500, #3b82f6);
+}
+
+.alt-tabs-button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.35);
+    border-radius: 3px;
+}
+
+.alt-tabs-button-icon {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.9;
+}
+
+.alt-tabs-button-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Left placement — positioned bar, parent picks up padding-left so the rest
+   of the form retains Statamic's native field-width grid (no per-field margins). */
+.alt-tabs-placement-left {
+    position: relative;
+    padding-left: 196px;
+    min-height: 1px;
+}
+
+.alt-tabs-placement-left > .alt-tabs-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 180px;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 2px;
+    margin: 0;
+    padding: 4px;
+    border: 1px solid var(--ui-color-gray-200, #e2e8f0);
+    border-radius: 6px;
+    background: var(--ui-color-gray-50, #f8fafc);
+}
+
+.alt-tabs-placement-left .alt-tabs-button {
+    justify-content: flex-start;
+    padding: 8px 12px;
+    margin: 0;
+    border: 0;
+    border-radius: 4px;
+}
+
+.alt-tabs-placement-left .alt-tabs-button:hover {
+    background: var(--ui-color-gray-100, #f1f5f9);
+    border-bottom-color: transparent;
+}
+
+.alt-tabs-placement-left .alt-tabs-button.is-active {
+    color: var(--ui-color-primary-700, #1d4ed8);
+    background: var(--ui-color-primary-50, #eff6ff);
+    border-bottom-color: transparent;
+}
+
+/* Tighter spacing for nested contexts. */
+.replicator-set .alt-tabs-bar,
+.bard-set .alt-tabs-bar,
+.grid-row .alt-tabs-bar {
+    margin-top: 0.25rem;
+}
+
+.replicator-set .alt-tabs-placement-left,
+.bard-set .alt-tabs-placement-left,
+.grid-row .alt-tabs-placement-left {
+    padding-left: 176px;
+}
+
+.replicator-set .alt-tabs-placement-left > .alt-tabs-bar,
+.bard-set .alt-tabs-placement-left > .alt-tabs-bar,
+.grid-row .alt-tabs-placement-left > .alt-tabs-bar {
+    width: 160px;
+}
