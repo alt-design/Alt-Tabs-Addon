@@ -24,8 +24,11 @@
         render: function () {
             var children = [];
             if (this.icon) {
+                // Vue 3 treats a string tag in h() as a native element, so 'ui-icon' would
+                // render as an unknown element and stay empty. Resolve the real component.
+                var UiIcon = window.Vue.resolveComponent('ui-icon');
                 children.push(h('span', { class: 'alt-tabs-marker-icon' }, [
-                    h('ui-icon', { name: this.icon })
+                    typeof UiIcon === 'string' ? null : h(UiIcon, { name: this.icon })
                 ]));
             }
             return h('div', {
@@ -72,6 +75,10 @@
         try { sessionStorage.setItem(storageKey(labels), String(idx)); } catch (e) {}
     }
 
+    // Walk up until we find the level where this marker sits alongside the OTHER markers —
+    // that's the shared field list we need to split into tabs. Statamic wraps each field in
+    // its own form-group, so we have to skip past any ancestor that only contains our own
+    // marker, or every tab ends up with a bar of its own.
     function findContainer(markerEl) {
         var el = markerEl.parentElement;
         while (el && el !== document.body) {
@@ -79,7 +86,7 @@
             var siblingMarker = false;
             for (var i = 0; i < children.length; i++) {
                 var c = children[i];
-                if (c === markerEl) continue;
+                if (c === markerEl || (c.contains && c.contains(markerEl))) continue;
                 if (c.classList && c.classList.contains('alt-tabs-marker')) { siblingMarker = true; break; }
                 if (c.querySelector && c.querySelector('.alt-tabs-marker')) { siblingMarker = true; break; }
             }
@@ -87,6 +94,26 @@
             el = el.parentElement;
         }
         return markerEl.parentElement;
+    }
+
+    // Copy the marker's rendered icon into the tab button, and keep watching until the
+    // async SVG turns up (giving up after a few seconds so we don't observe forever).
+    function mirrorIcon(source, target) {
+        var copy = function () {
+            var svg = source.querySelector('svg');
+            if (!svg) return false;
+            // Clone the node rather than copying markup — nothing is parsed from a string.
+            target.replaceChildren(svg.cloneNode(true));
+            return true;
+        };
+
+        if (copy()) return;
+
+        var observer = new MutationObserver(function () {
+            if (copy()) observer.disconnect();
+        });
+        observer.observe(source, { childList: true, subtree: true });
+        setTimeout(function () { observer.disconnect(); }, 5000);
     }
 
     function reorganise(container) {
@@ -146,10 +173,13 @@
             btn.setAttribute('data-alt-tab-index', String(idx));
 
             if (tab.iconEl) {
-                var iconClone = tab.iconEl.cloneNode(true);
-                iconClone.classList.add('alt-tabs-button-icon');
-                iconClone.setAttribute('aria-hidden', 'true');
-                btn.appendChild(iconClone);
+                var iconHost = document.createElement('span');
+                iconHost.className = 'alt-tabs-marker-icon alt-tabs-button-icon';
+                iconHost.setAttribute('aria-hidden', 'true');
+                btn.appendChild(iconHost);
+                // ui-icon fetches its SVG asynchronously, so the marker's copy is usually
+                // still empty when we get here. Mirror it now and again once it arrives.
+                mirrorIcon(tab.iconEl, iconHost);
             }
 
             var labelSpan = document.createElement('span');
