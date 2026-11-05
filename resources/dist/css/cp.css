@@ -1,4 +1,4 @@
-/* Marker is invisible — it's just a hook for the reorganiser. */
+/* Marker is invisible, it's just a hook for the reorganiser. */
 .alt-tabs-marker {
     display: none;
 }
@@ -11,7 +11,7 @@
     display: none !important;
 }
 
-/* Tab bar — shared */
+/* Tab bar, shared */
 .alt-tabs-bar {
     display: flex;
     flex-wrap: wrap;
@@ -103,7 +103,7 @@
     height: 100%;
 }
 
-/* Left placement — positioned bar, parent picks up padding-left so the rest
+/* Left placement, positioned bar, parent picks up padding-left so the rest
    of the form retains Statamic's native field-width grid (no per-field margins). */
 .alt-tabs-placement-left {
     position: relative;

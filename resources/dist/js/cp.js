@@ -102,7 +102,7 @@
         var copy = function () {
             var svg = source.querySelector('svg');
             if (!svg) return false;
-            // Clone the node rather than copying markup — nothing is parsed from a string.
+            // Clone the node rather than copying markup, nothing is parsed from a string.
             target.replaceChildren(svg.cloneNode(true));
             return true;
         };
@@ -212,7 +212,7 @@
                 activateTab(idx, true);
             });
 
-            // Roving tabindex — left/right (or up/down when placed left) move between tabs.
+            // Roving tabindex, left/right (or up/down when placed left) move between tabs.
             btn.addEventListener('keydown', function (e) {
                 var next = null;
                 var forward = placement === 'left' ? 'ArrowDown' : 'ArrowRight';
