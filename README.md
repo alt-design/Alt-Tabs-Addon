@@ -1,38 +1,33 @@
 # Alt Tabs Addon
 
-A Statamic fieldtype that visually splits subsequent blueprint fields into named tabs — inspired by the [ACF Tab field](https://www.advancedcustomfields.com/resources/tab/) for WordPress.
+A Statamic fieldtype that splits the fields after it into named tabs, inspired by the [ACF Tab field](https://www.advancedcustomfields.com/resources/tab/) for WordPress.
+
+Statamic 6 already has tabs and sections at blueprint level. This addon adds tabs **inside** Replicator sets, Bard sets, Grid rows and Groups, where Statamic has none.
 
 ## Features
 
 - Drop a `Tab` field into a blueprint; following fields become a tab
-- Works inside regular blueprint sections, Replicator sets, Bard sets, Grid rows, Group fields, and page builder sets
-- Stores no value — purely an organisational element in the CP
+- Works inside regular blueprint sections, Replicator sets, Bard sets, stacked Grid rows, Group fields, and nested sets
+- Stores no value purely an organisational element in the CP
 - Configurable label, optional icon and top / left placement
-- Remembers the open tab per form for the length of the browser session
-- Keyboard accessible — proper `tablist` / `tab` / `tabpanel` roles and arrow-key navigation
-- No build step required — ships as plain JS / CSS for the Statamic control panel
+- Remembers the open tab for the browser session, per page and per set of tab labels
+- Marks tabs that contain validation errors and opens the first one when errors appear
+- Light and dark control panel themes
+- Keyboard accessible proper `tablist` / `tab` / `tabpanel` roles and arrow-key navigation
+- No build step required ships as plain JS / CSS for the Statamic control panel
 
 ## Requirements
 
-- Statamic **6.x**
+- Statamic **6.40** or later (tested on 6.40.0)
 - PHP 8.2+
 
-> Built and tested against Statamic 6. It won't work on Statamic 4 — the control panel
-> fieldtype is a Vue 3 render function, and 4.x ships Vue 2. Statamic 5 is untested; the
-> icon support in particular relies on the `ui-icon` component introduced in 6.
+> Statamic 4 and 5 are not supported. The control panel fieldtype is a Vue 3 render
+> function, and the icon support relies on the `ui-icon` component introduced in 6.
 
 ## Installation
 
 ```bash
 composer require alt-design/alt-tabs
-```
-
-Or, to develop against a local checkout, add it as a path repository first:
-
-```json
-"repositories": [
-    { "type": "path", "url": "addons/Alt-Tabs-Addon" }
-]
 ```
 
 The control panel JS and CSS are registered automatically. You only need to publish
@@ -65,22 +60,22 @@ The publish form will show three tab buttons: **General**, **SEO**, **Advanced**
 
 ### Inside Replicator / Bard / Page Builder sets
 
-The same pattern works inside a Replicator or Bard set. This is the primary use case for page builders — long sets become much easier to scan when split into a few tabs.
+The same pattern works inside a Replicator or Bard set. This is the primary use case for page builders long sets become much easier to scan when split into a few tabs.
 
 ### Inside Grid
 
-Drop a Tab field into a Grid field's fields list. Each row gets its own tab UI.
+Drop a Tab field into a Grid field's fields list. Each row gets its own tab UI. This needs stacked mode: in table mode there is one column per field, so Tab fields are hidden and the other columns show as normal.
 
 ## Configuration
 
 | Option | Default | Description |
 | --- | --- | --- |
-| `label` | — | The tab's display name. Falls back to `Tab 1`, `Tab 2`… if left blank. |
-| `placement` | `left` | `top` or `left` — where the tab buttons render. |
-| `icon` | — | Optional Statamic icon name shown on the tab button (e.g. `cog`, `magnifying-glass`). |
+| `label` | | The tab's display name. Falls back to `Tab 1`, `Tab 2`… if left blank. |
+| `placement` | `left` | `top` or `left` where the tab buttons render. |
+| `icon` | | Optional Statamic icon name shown on the tab button (e.g. `cog`, `magnifying-glass`). A name that does not exist shows no icon.. |
 
 `placement` is read from the **first** Tab field in a group and applied to the whole tab
-bar — mixing `top` and `left` within one section isn't supported.
+bar mixing `top` and `left` within one section isn't supported.
 
 ## Keyboard navigation
 
@@ -92,9 +87,19 @@ With a tab button focused:
 | `↑` / `↓` | Previous / next tab (when `placement` is `left`) |
 | `Home` / `End` | First / last tab |
 
+## Validation errors
+
+A tab holding a field with a validation error gets a red dot and a visually hidden "Contains errors" label. When errors appear and the open tab has none, the first tab with an error opens. A Tab field inside a Replicator set that sits inside a hidden tab works the same way, one level at a time.
+
+## Limitations
+
+- Grid table mode has no room for tabs, so Tab fields are hidden there.
+- A field condition on the Tab field itself is not supported. Conditions on the fields inside a tab work as normal.
+- A tab whose fields are all hidden by conditions still shows its button.
+
 ## Stored value
 
-None. The Tab fieldtype stores `null` and is skipped during processing — it's a pure
+None. The Tab fieldtype stores `null` and is skipped during processing, as a pure
 organisational marker. Removing a Tab field from a blueprint never touches your content.
 
 ## How it works
@@ -103,11 +108,11 @@ The fieldtype renders an invisible marker element into the publish form. A small
 pass in the control panel finds those markers, works out which sibling field wrappers belong
 to each one, builds a tab bar, and toggles a `display: none` class as you switch tabs. Because
 it operates on the rendered DOM rather than the blueprint schema, it works anywhere Statamic
-renders a field list — including inside nested sets it knows nothing about.
+renders a field list including inside nested sets it knows nothing about.
 
 If Statamic re-renders a set's fields in place (adding a row, a condition toggling), the
 markers are re-detected and the tab bar rebuilt automatically.
 
 ## Licence
 
-MIT — © Alt Design Ltd
+MIT, copyright Alt Design Ltd. Support is through [GitHub issues](https://github.com/alt-design/Alt-Tabs-Addon/issues).
