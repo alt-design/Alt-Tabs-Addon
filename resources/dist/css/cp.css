@@ -21,8 +21,37 @@
     background: transparent;
     border: 0;
     border-bottom: 1px solid var(--ui-color-gray-200, #e2e8f0);
-    grid-column: 1 / -1;
     min-width: 0;
+}
+
+.alt-tabs-bar-top {
+    grid-column: 1 / -1;
+}
+
+.alt-tabs-table-cell {
+    display: none !important;
+}
+
+.alt-tabs-button-error {
+    position: absolute;
+    top: 6px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    overflow: hidden;
+    padding: 0;
+    text-indent: 100%;
+    white-space: nowrap;
+    border-radius: 9999px;
+    background: var(--ui-color-red-600, #dc2626);
+}
+
+.alt-tabs-button-error[hidden] {
+    display: none;
+}
+
+.alt-tabs-button.has-error {
+    padding-right: 20px;
 }
 
 .alt-tabs-button {
