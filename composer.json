@@ -1,9 +1,27 @@
 {
     "name": "alt-design/alt-tabs",
-    "description": "A Statamic fieldtype that visually organises subsequent blueprint fields into named tabs.",
-    "version": "1.0.0",
+    "description": "A Statamic fieldtype that groups the fields after it into tabs, including inside Replicator and Bard sets, Grid rows and Groups.",
     "type": "statamic-addon",
     "license": "MIT",
+    "keywords": [
+        "statamic",
+        "statamic-addon",
+        "fieldtype",
+        "tabs",
+        "replicator",
+        "bard",
+        "grid",
+        "control-panel"
+    ],
+    "authors": [
+        {
+            "name": "Alt Design",
+            "homepage": "https://alt-design.net"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/alt-design/Alt-Tabs-Addon/issues"
+    },
     "autoload": {
         "psr-4": {
             "AltDesign\\AltTabsAddon\\": "src"
@@ -11,7 +29,7 @@
     },
     "require": {
         "php": "^8.2",
-        "statamic/cms": "^6.0"
+        "statamic/cms": "^6.40"
     },
     "require-dev": {
         "orchestra/testbench": "^9.0|^10.0",
@@ -25,7 +43,7 @@
     "extra": {
         "statamic": {
             "name": "Alt Tabs",
-            "description": "ACF-style Tab fieldtype that splits subsequent fields into tabs."
+            "description": "Group the fields after a Tab field into tabs, inside blueprint sections, Replicator and Bard sets, Grid rows and Groups."
         },
         "laravel": {
             "providers": [

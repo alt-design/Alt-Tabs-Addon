@@ -84,8 +84,8 @@
 }
 
 .alt-tabs-button:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.35);
+    outline: 2px solid var(--ui-color-primary-500, #3b82f6);
+    outline-offset: -2px;
     border-radius: 3px;
 }
 
@@ -163,4 +163,36 @@
 .bard-set .alt-tabs-placement-left > .alt-tabs-bar,
 .grid-row .alt-tabs-placement-left > .alt-tabs-bar {
     width: 160px;
+}
+
+.dark .alt-tabs-bar {
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+.dark .alt-tabs-button {
+    color: #a1a1aa;
+}
+
+.dark .alt-tabs-button:hover {
+    color: #f4f4f5;
+    border-bottom-color: rgba(255, 255, 255, 0.25);
+}
+
+.dark .alt-tabs-button.is-active {
+    color: #93c5fd;
+    border-bottom-color: #60a5fa;
+}
+
+.dark .alt-tabs-placement-left > .alt-tabs-bar {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.dark .alt-tabs-placement-left .alt-tabs-button:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.dark .alt-tabs-placement-left .alt-tabs-button.is-active {
+    color: #bfdbfe;
+    background: rgba(59, 130, 246, 0.2);
 }
