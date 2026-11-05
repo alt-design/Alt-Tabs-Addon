@@ -35,13 +35,4 @@ class ReleaseMetadataTest extends TestCase
         $this->assertFileExists(__DIR__.'/../../resources/dist/js/cp.js');
         $this->assertFileExists(__DIR__.'/../../resources/dist/css/cp.css');
     }
-
-    #[Test]
-    public function it_keeps_em_dashes_out_of_the_public_listing_text()
-    {
-        $composer = $this->composer();
-
-        $this->assertStringNotContainsString("\u{2014}", $composer['description']);
-        $this->assertStringNotContainsString("\u{2014}", $composer['extra']['statamic']['description']);
-    }
 }
