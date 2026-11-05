@@ -75,7 +75,7 @@
         try { sessionStorage.setItem(storageKey(labels), String(idx)); } catch (e) {}
     }
 
-    // Walk up until we find the level where this marker sits alongside the OTHER markers —
+    // Walk up until we find the level where this marker sits alongside the OTHER markers ,
     // that's the shared field list we need to split into tabs. Statamic wraps each field in
     // its own form-group, so we have to skip past any ancestor that only contains our own
     // marker, or every tab ends up with a bar of its own.
