@@ -90,4 +90,14 @@ class TabFieldtypeTest extends TestCase
         $this->assertContains('placement', $handles);
         $this->assertContains('icon', $handles);
     }
+
+    #[Test]
+    public function it_hides_settings_that_mean_nothing_for_a_field_without_a_value()
+    {
+        $fieldtype = $this->fieldtype(['label' => 'General']);
+
+        $this->assertFalse($fieldtype->validatable());
+        $this->assertFalse($fieldtype->defaultable());
+        $this->assertFalse($fieldtype->localizable());
+    }
 }
