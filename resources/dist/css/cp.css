@@ -21,6 +21,8 @@
     background: transparent;
     border: 0;
     border-bottom: 1px solid var(--ui-color-gray-200, #e2e8f0);
+    grid-column: 1 / -1;
+    min-width: 0;
 }
 
 .alt-tabs-button {
