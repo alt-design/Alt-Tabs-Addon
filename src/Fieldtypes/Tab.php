@@ -6,6 +6,9 @@ class Tab extends Fieldtype
 {
     protected $icon = 'tabs-sections';
     protected $categories = ['special'];
+    protected $validatable = false;
+    protected $defaultable = false;
+    protected $localizable = false;
     protected static $title = 'Tab';
 
     protected function configFieldItems(): array

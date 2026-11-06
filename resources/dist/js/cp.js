@@ -75,7 +75,7 @@
         try { sessionStorage.setItem(storageKey(labels), String(idx)); } catch (e) {}
     }
 
-    // Walk up until we find the level where this marker sits alongside the OTHER markers —
+    // Walk up until we find the level where this marker sits alongside the OTHER markers:
     // that's the shared field list we need to split into tabs. Statamic wraps each field in
     // its own form-group, so we have to skip past any ancestor that only contains our own
     // marker, or every tab ends up with a bar of its own.
@@ -102,7 +102,7 @@
         var copy = function () {
             var svg = source.querySelector('svg');
             if (!svg) return false;
-            // Clone the node rather than copying markup — nothing is parsed from a string.
+            // Clone the node rather than copying markup, nothing is parsed from a string.
             target.replaceChildren(svg.cloneNode(true));
             return true;
         };
@@ -187,6 +187,12 @@
             labelSpan.textContent = tab.label;
             btn.appendChild(labelSpan);
 
+            var errorFlag = document.createElement('span');
+            errorFlag.className = 'alt-tabs-button-error';
+            errorFlag.textContent = 'Contains errors';
+            errorFlag.hidden = true;
+            btn.appendChild(errorFlag);
+
             // Each tab owns a set of sibling field wrappers rather than one panel element, so
             // point aria-controls at them collectively and mark each as a panel for the tab.
             var panelIds = [];
@@ -206,7 +212,7 @@
                 activateTab(idx, true);
             });
 
-            // Roving tabindex — left/right (or up/down when placed left) move between tabs.
+            // Roving tabindex, left/right (or up/down when placed left) move between tabs.
             btn.addEventListener('keydown', function (e) {
                 var next = null;
                 var forward = placement === 'left' ? 'ArrowDown' : 'ArrowRight';
@@ -227,7 +233,11 @@
 
         container.insertBefore(bar, markers[0].wrapper);
 
+        var current = 0;
+        var errorState = tabs.map(function () { return false; });
+
         function activateTab(activeIdx, persist) {
+            current = activeIdx;
             tabs.forEach(function (tab, idx) {
                 var isActive = idx === activeIdx;
                 buttons[idx].classList.toggle('is-active', isActive);
@@ -246,12 +256,37 @@
 
         activateTab(readActive(labels), false);
 
+        function syncErrors() {
+            var firstNew = -1;
+            tabs.forEach(function (tab, idx) {
+                var has = tab.fields.some(function (f) {
+                    return f && f.querySelector && f.querySelector('[data-ui-error-message]') !== null;
+                });
+                if (has && !errorState[idx] && firstNew === -1) firstNew = idx;
+                errorState[idx] = has;
+                buttons[idx].classList.toggle('has-error', has);
+                buttons[idx].querySelector('.alt-tabs-button-error').hidden = !has;
+            });
+            if (firstNew !== -1 && !errorState[current]) activateTab(firstNew, false);
+        }
+
+        var syncScheduled = false;
+        var errorObserver = new MutationObserver(function () {
+            if (!container.isConnected) { errorObserver.disconnect(); return; }
+            if (syncScheduled) return;
+            syncScheduled = true;
+            requestAnimationFrame(function () { syncScheduled = false; syncErrors(); });
+        });
+        errorObserver.observe(container, { childList: true, subtree: true });
+        syncErrors();
+
         // Statamic can re-render a set's fields in place (adding a row, toggling a condition),
         // which drops our markers but leaves the bar behind. Watch for that and rebuild.
         var selfHeal = new MutationObserver(function () {
             if (!container.isConnected) { selfHeal.disconnect(); return; }
             if (container.querySelector('.alt-tabs-marker')) return;
             selfHeal.disconnect();
+            errorObserver.disconnect();
             bar.remove();
             delete container.dataset.altTabsProcessed;
             container.classList.remove(REORG_CLASS, 'alt-tabs-placement-' + placement);
@@ -261,10 +296,22 @@
         selfHeal.observe(container, { childList: true });
     }
 
+    function hideTableColumn(marker) {
+        var cell = marker.closest('td.grid-cell.tab-fieldtype');
+        if (!cell) return false;
+        var table = cell.closest('table');
+        var index = Array.prototype.indexOf.call(cell.parentElement.children, cell);
+        var headRow = table && table.querySelector('thead tr');
+        cell.classList.add('alt-tabs-table-cell');
+        if (headRow && headRow.children[index]) headRow.children[index].classList.add('alt-tabs-table-cell');
+        return true;
+    }
+
     function scan() {
         var markers = document.querySelectorAll('.alt-tabs-marker');
         var seen = [];
         markers.forEach(function (marker) {
+            if (hideTableColumn(marker)) return;
             var container = findContainer(marker);
             if (!container || seen.indexOf(container) !== -1) return;
             seen.push(container);

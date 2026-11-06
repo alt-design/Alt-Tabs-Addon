@@ -1,4 +1,4 @@
-/* Marker is invisible — it's just a hook for the reorganiser. */
+/* Marker is invisible, it's just a hook for the reorganiser. */
 .alt-tabs-marker {
     display: none;
 }
@@ -11,7 +11,7 @@
     display: none !important;
 }
 
-/* Tab bar — shared */
+/* Tab bar, shared */
 .alt-tabs-bar {
     display: flex;
     flex-wrap: wrap;
@@ -21,6 +21,37 @@
     background: transparent;
     border: 0;
     border-bottom: 1px solid var(--ui-color-gray-200, #e2e8f0);
+    min-width: 0;
+}
+
+.alt-tabs-bar-top {
+    grid-column: 1 / -1;
+}
+
+.alt-tabs-table-cell {
+    display: none !important;
+}
+
+.alt-tabs-button-error {
+    position: absolute;
+    top: 6px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    overflow: hidden;
+    padding: 0;
+    text-indent: 100%;
+    white-space: nowrap;
+    border-radius: 9999px;
+    background: var(--ui-color-red-600, #dc2626);
+}
+
+.alt-tabs-button-error[hidden] {
+    display: none;
+}
+
+.alt-tabs-button.has-error {
+    padding-right: 20px;
 }
 
 .alt-tabs-button {
@@ -53,8 +84,8 @@
 }
 
 .alt-tabs-button:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.35);
+    outline: 2px solid var(--ui-color-primary-500, #3b82f6);
+    outline-offset: -2px;
     border-radius: 3px;
 }
 
@@ -72,7 +103,7 @@
     height: 100%;
 }
 
-/* Left placement — positioned bar, parent picks up padding-left so the rest
+/* Left placement, positioned bar, parent picks up padding-left so the rest
    of the form retains Statamic's native field-width grid (no per-field margins). */
 .alt-tabs-placement-left {
     position: relative;
@@ -132,4 +163,36 @@
 .bard-set .alt-tabs-placement-left > .alt-tabs-bar,
 .grid-row .alt-tabs-placement-left > .alt-tabs-bar {
     width: 160px;
+}
+
+.dark .alt-tabs-bar {
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+.dark .alt-tabs-button {
+    color: #a1a1aa;
+}
+
+.dark .alt-tabs-button:hover {
+    color: #f4f4f5;
+    border-bottom-color: rgba(255, 255, 255, 0.25);
+}
+
+.dark .alt-tabs-button.is-active {
+    color: #93c5fd;
+    border-bottom-color: #60a5fa;
+}
+
+.dark .alt-tabs-placement-left > .alt-tabs-bar {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.dark .alt-tabs-placement-left .alt-tabs-button:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.dark .alt-tabs-placement-left .alt-tabs-button.is-active {
+    color: #bfdbfe;
+    background: rgba(59, 130, 246, 0.2);
 }
